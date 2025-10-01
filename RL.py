@@ -52,3 +52,15 @@ class RainPiezoEnv(gym.Env):
 
     def close(self):
         pass
+
+if __name__ == "__main__":
+    env = RainPiezoEnv(length=10)
+
+    model = PPO("MlpPolicy", env, verbose=1)
+    model.learn(total_timesteps=5000)
+
+    obs, info = env.reset()
+    for _ in range(20):
+        action, _ = model.predict(obs)
+        obs, reward, terminated, truncated, info = env.step(action)
+        env.render()
